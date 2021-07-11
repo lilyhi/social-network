@@ -14,13 +14,41 @@ const UserSchema = new Schema (
       type: String,
       required: true,
       unique: true,
-      // email: must match (might be in the class video)
+      match: [/.+@.+\..+/]
+      // email: must match 
     },
-    thoughts: {
-
-    }
+    thoughts: [
+      {
+        type: Schema.types.ObjectId,
+        ref: 'Thought'
+      }
+    ],
+    friends: [
+      {
+        type: Schema.types.ObjectId,
+        ref: 'User'
+      }
+    ]
+  },
+  {
+    toJSON: {
+      virtuals: true
+    },
+    // prevents virtuals from creating duplicate of _id as `id`
+    id: false
   }
-)
+);
+
+// virtual that gets number of friends
+UserSchema.virtual('friendCount').get(function() {
+  return this.friends.length;
+});
+
+// create the User model using the UserSchema
+const User = model('User', UserSchema);
+
+// export the User model
+module.exports = User;
 
 // * username
 // String
@@ -40,3 +68,4 @@ const UserSchema = new Schema (
 // * friends 
 // Array of _id values referencing the User model (self-reference)
 
+// Create a virtual called friendCount that retrieves the length of the user's friends array field on query.
