@@ -1,6 +1,6 @@
 // import dependencies
 const { Schema, model, Types } = require('mongoose');
-// const dateFormat = require('../utils/dateFormat');
+const dateFormat = require('../utils/dateFormat');
 
 const UserSchema = new Schema (
   {
@@ -14,7 +14,7 @@ const UserSchema = new Schema (
       type: String,
       required: true,
       unique: true,
-      match: [/.+@.+\..+/]
+      match: [/.+@.+\..+/, "Must match this pattern!"]
       // email: must match 
     },
     thoughts: [
