@@ -8,11 +8,6 @@ const ReactionSchema = new Schema (
       type: Schema.Types.ObjectId,
       default: () => new Types.ObjectId()
     },
-    createdAt: {
-      type: Date,
-      default: Date.now,
-      get: createdAtVal => dateFormat(createdAtVal)
-    },
     reactionBody: {
       type: String,
       required: true,
