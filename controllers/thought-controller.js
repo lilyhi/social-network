@@ -1,4 +1,4 @@
-const { Thought, User } = require('../models');
+const { Thought, User, Reaction } = require('../models');
 
 const thoughtController = {
   // get all thoughts
@@ -42,11 +42,15 @@ const thoughtController = {
 
   // POST to create a new thought (don't forget to push the created thought's _id to the associated user's thoughts array field)
   // create thought
-  createThought({ body }, res) {
-    Thought.create({body})
-      .then(dbThoughtData => {
+  createThought({ params, body }, res) {
+    Thought.create(body)
+      .then(({ _id }) => {
         // update the user table
-        return User.findOneAndUpdate({ _id: body.userId }, {$push: {thoughts: dbThoughtData._id }}, {new: true})
+        return User.findOneAndUpdate(
+          { _id: body.userId }, 
+          {$push: {thoughts: _id }}, 
+          {new: true}
+        );
         // res.json(dbThoughtData)
       }).then(dbUserData => {
         // if no thought is found, send 404
@@ -74,7 +78,7 @@ const thoughtController = {
         }
         res.json(dbThoughtData);
       })
-      .catch(err => res.json(err));
+      .catch(err => res.status(400).json(err));
   },
 
   // update a thought by id
@@ -94,13 +98,14 @@ const thoughtController = {
   deleteThought({ params }, res) {
     Thought.findOneAndDelete({ _id: params.id })
       .then(dbThoughtData => {
-        // if (!dbThoughtData) {
-        //   res.status(404).json({ message: 'No thought found with this id!' })
-        //   return;
-        // }
-        // res.json(dbThoughtData)
+        if (!dbThoughtData) {
+          res.status(404).json({ message: 'No thought found with this id!' })
+          return;
+        }
+        res.json(dbThoughtData)
         return User.findOneAndUpdate({ _id: body.userId }, {$pull: {thoughts: dbThoughtData._id }}, {new: true})
         // res.json(dbThoughtData)
+        // line 109 and 111 had dbUserData instead, i just changed it to test
       }).then(dbUserData => {
         // if no thought is found, send 404
         if (!dbUserData) {

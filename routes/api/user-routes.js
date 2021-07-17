@@ -15,14 +15,14 @@ router.route('/')
 .get(getAllUser)
 .post(createUser);
 
-// /api/users/:id GET one, PUT, and DELETE
+// /api/users/:userId GET one, PUT, and DELETE
 router.route('/:userId')
 .get(getUserById)
 .put(updateUser)
 .delete(deleteUser);
 
 // /api/users/:userId/friends/:friendId POST and DELETE friend
-router.route('/:userId/friends/friendId')
+router.route('/:userId/friends/:friendId')
 .post(createFriend)
 .delete(deleteFriend);
 
