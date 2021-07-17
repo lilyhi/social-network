@@ -52,7 +52,7 @@ const userController = {
 
   // update user by id
   updateUser({ params, body }, res) {
-    User.findByIdAndUpdate({ _id: params.id }, body, {
+    User.findByIdAndUpdate({ _id: params.userId }, body, {
       new: true,
       runValidators: true,
     })
@@ -68,7 +68,7 @@ const userController = {
 
   // delete a user
   deleteUser({ params }, res) {
-    User.findOneAndDelete({ _id: params.id })
+    User.findOneAndDelete({ _id: params.userId })
       .then((dbUserData) => {
         if (!dbUserData) {
           res.status(404).json({ message: "No user found with this id!" });
