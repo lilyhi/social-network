@@ -16,7 +16,7 @@ https://drive.google.com/file/d/1vg5C17LRP-wAFMj4D4H1w_H6Lq_JkIbc/view
 
 
 ## Usage
-npm install 
+npm install </br>
 Run: npm start in the terminal to start the server
 
 
